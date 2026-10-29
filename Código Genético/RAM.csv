@@ -1,0 +1,44 @@
+﻿ID,Binario,Nivel de Ventas,Marca,Modelo / Serie,Tipo,Capacidad Total (GB),Kit (Módulos),Velocidad (MT/s),Latencia (CL),Mejor Precio (MXN),Tienda (Mejor Precio),Justificación (Por qué está en la lista),
+0,000000,Muy Alto,Teamgroup,T-Force Vulcan Z,DDR4,16GB,2x8GB,3200,16,$849,Mercado Libre,Constantemente en el Top 3 de ventas en ML y Amazon. El líder en precio.,DDR4 (Sweet Spot - 16GB)
+1,000001,Muy Alto,Kingston,FURY Beast,DDR4,16GB,2x8GB,3200,16,$850,Amazon,El más vendido #1 o #2 en Amazon. Enorme confianza de marca.,
+2,000010,Muy Alto,Corsair,Vengeance LPX,DDR4,16GB,2x8GB,3200,16,$899,Mercado Libre,"Top 5 histórico. La opción ""clásica"" y de perfil bajo preferida por muchos.",
+3,000011,Alto,ADATA,XPG Gammix D10,DDR4,16GB,2x8GB,3200,16,$880,Amazon,"Frecuentemente en el Top 10 de ventas, compitiendo directamente con Teamgroup.",
+4,000100,Alto,PNY,XLR8 Gaming,DDR4,16GB,2x8GB,3200,16,$850,Amazon,"Aparece en listas de ""Más Vendidos"" como una alternativa de valor a las 3 grandes.",
+5,000101,Medio,Kingston,FURY Beast,DDR4,16GB,2x8GB,3600,18,"$1,050",Amazon,Opción de mejora de velocidad (3600MHz) más vendida para DDR4.,
+6,000110,Medio,Corsair,Vengeance LPX,DDR4,16GB,2x8GB,3600,18,"$1,100",Amazon,"La contraparte de Corsair para 3600MHz, también con ventas consistentes.",
+7,000111,Alto,Teamgroup,T-Force Delta RGB,DDR4,16GB,2x8GB,3200,16,"$1,050",Amazon,"La memoria RGB más vendida en México, gracias a su excelente precio.",DDR4 (Sweet Spot - 16GB RGB)
+8,001000,Alto,Kingston,FURY Beast RGB,DDR4,16GB,2x8GB,3200,16,"$1,100",Mercado Libre,La segunda RGB más vendida. Fuerte presencia en ML y Amazon.,
+9,001001,Alto,Corsair,Vengeance RGB Pro,DDR4,16GB,2x8GB,3200,16,"$1,200",Amazon,"La opción ""premium"" de RGB en DDR4. Muy popular a pesar del precio.",
+10,001010,Medio,ADATA,XPG Spectrix D50,DDR4,16GB,2x8GB,3200,16,"$1,150",Amazon,La oferta RGB de ADATA. Fuerte presencia en el Top 20 de ventas.,
+11,001011,Medio,Teamgroup,T-Force Delta RGB,DDR4,16GB,2x8GB,3600,18,"$1,250",Mercado Libre,La versión de 3600MHz de la RGB más vendida.,
+12,001100,Alto,Kingston,FURY Beast,DDR4,32GB,2x16GB,3200,16,"$1,580",Amazon,La opción #1 más vendida para quienes buscan 32GB en DDR4.,DDR4 (Mejora - 32GB)
+13,001101,Alto,Teamgroup,T-Force Vulcan Z,DDR4,32GB,2x16GB,3200,16,"$1,550",Mercado Libre,El competidor directo de Kingston por el #1 en 32GB. El líder en precio.,
+14,001110,Alto,Corsair,Vengeance LPX,DDR4,32GB,2x16GB,3200,16,"$1,650",Amazon,"La opción ""clásica"" para 32GB. Siempre presente en las listas.",
+15,001111,Medio,Kingston,FURY Beast,DDR4,32GB,2x16GB,3600,18,"$1,900",Mercado Libre,La opción de 32GB/3600MHz más popular para DDR4.,
+16,010000,Medio,Corsair,Vengeance LPX,DDR4,32GB,2x16GB,3600,18,"$1,950",Amazon,"Contraparte de Corsair para 32GB/3600MHz, ventas estables.",
+17,010001,Medio,Teamgroup,T-Force Delta RGB,DDR4,32GB,2x16GB,3200,16,"$1,850",Mercado Libre,"La opción RGB más vendida para 32GB, por su precio.",DDR4 (Mejora - 32GB RGB)
+18,010010,Medio,Kingston,FURY Beast RGB,DDR4,32GB,2x16GB,3200,16,"$1,950",Mercado Libre,Segunda opción RGB más vendida en 32GB.,
+19,010011,Medio,Corsair,Vengeance RGB Pro,DDR4,32GB,2x16GB,3200,16,"$2,050",Amazon,"Opción ""premium"" RGB en 32GB, con ventas consistentes.",
+20,010100,Muy Alto,Kingston,FURY Beast,DDR5,32GB,2x16GB,6000,36,"$2,279",Amazon,El kit DDR5 más vendido en México (Amazon #1). Es el nuevo estándar.,DDR5 (Sweet Spot - 32GB)
+21,010101,Muy Alto,Corsair,Vengeance,DDR5,32GB,2x16GB,6000,36,"$2,400",Mercado Libre,El #2 más vendido en DDR5. Fuerte presencia en ML.,
+22,010110,Alto,ADATA,XPG Lancer,DDR5,32GB,2x16GB,6000,36,"$2,250",Mercado Libre,El competidor de precio en DDR5. Muy popular.,
+23,010111,Alto,Kingston,FURY Beast,DDR5,32GB,2x16GB,5200,40,"$2,000",Amazon,"Opción de 5200MHz más vendida, (compra de entrada para DDR5).",
+24,011000,Alto,Corsair,Vengeance,DDR5,32GB,2x16GB,5200,40,"$2,100",Amazon,"Opción de 5200MHz de Corsair, también muy popular.",
+25,011001,Medio,Teamgroup,T-Force Vulcan,DDR5,32GB,2x16GB,5600,40,"$2,100",Amazon,"La oferta de valor de Teamgroup en DDR5, con ventas crecientes.",
+26,011010,Medio,Crucial,Pro,DDR5,32GB,2x16GB,5600,46,"$2,100",Amazon,Opción de alta compatibilidad (JEDEC) que aparece en ventas por su fiabilidad.,
+27,011011,Muy Alto,Kingston,FURY Beast RGB,DDR5,32GB,2x16GB,6000,36,"$2,550",Amazon,El kit DDR5 RGB más vendido en México. Top 5 general de DDR5.,DDR5 (Sweet Spot - 32GB RGB)
+28,011100,Muy Alto,Corsair,Vengeance RGB,DDR5,32GB,2x16GB,6000,36,"$2,700",Mercado Libre,El #2 en DDR5 RGB. Muy popular en ML y tiendas especializadas.,
+29,011101,Alto,ADATA,XPG Lancer RGB,DDR5,32GB,2x16GB,6000,36,"$2,500",Amazon,El competidor RGB de precio. Siempre en el Top 10 de DDR5.,
+30,011110,Alto,Teamgroup,T-Force Delta RGB,DDR5,32GB,2x16GB,6000,38,"$2,450",Mercado Libre,Fuerte presencia por ser la opción RGB de 6000MHz más económica.,
+31,011111,Medio,G.Skill,Trident Z5 RGB,DDR5,32GB,2x16GB,6000,30,"$2,900",Amazon,"DESCARTADO ANTES, AHORA JUSTIFICADO: Es el kit ""entusiasta"" (CL30) más vendido.",
+32,100000,Medio,Kingston,FURY Beast RGB,DDR5,32GB,2x16GB,5200,40,"$2,250",Amazon,La versión RGB de la DDR5 de entrada (5200MHz).,
+33,100001,Medio,Corsair,Vengeance RGB,DDR5,32GB,2x16GB,5200,40,"$2,350",Mercado Libre,La contraparte de Corsair RGB a 5200MHz.,
+34,100010,Medio,Kingston,FURY Beast,DDR4,16GB,1x16GB,3200,16,$800,Mercado Libre,La memoria de 16GB (1 solo módulo) más vendida para upgrades de DDR4.,DDR4/DDR5 (Variantes de 1 Módulo - Comunes para Upgrade)
+35,100011,Medio,Kingston,FURY Beast,DDR5,16GB,1x16GB,5200,40,"$1,050",Mercado Libre,La memoria de 16GB (1 solo módulo) más vendida para upgrades de DDR5.,
+36,100100,Muy Alto,Kingston,FURY Beast Black,DDR4,8GB,1x8GB,3200,16,$400,Amazon,Top 1 Ventas Módulos Individuales. El estándar absoluto para quien arma una PC barata pieza por pieza.,DDR4 (Módulos de 8GB Y 4GB)
+37,100101,Alto,ADATA,XPG Spectrix D35G,DDR4,8GB,1x8GB,3200,16,$450,Mercado Libre,Líder RGB Económico. El módulo de 8GB con luces más vendido. Muchos usuarios sacrifican rendimiento por estética; el algoritmo debe saber esto.,
+38,100110,Muy Alto,Kingston,ValueRAM (KVR),DDR4,8GB,1x8GB,2666 / 3200,22,$350,Cyberpuerta,Estándar Corporativo/Oficina. Es la memoria verde sin disipador que domina en licitaciones y oficinas (Perfil Administrativo).,
+39,100111,Medio,Corsair,Vengeance LPX,DDR4,8GB,1x8GB,3200,16,$480,Amazon,"Alternativa Premium. Aunque es más cara, sigue en el Top de ventas por lealtad a la marca Corsair.",
+40,101000,Medio,Crucial,CT8G4 (Basics),DDR4,8GB,1x8GB,2666 / 3200,22,$340,Amazon,Competidor de Precio. Frecuentemente aparece como la opción de 8GB más barata de Amazon (Amazon Choice).,
+41,101001,Bajo (Nicho),Kingston,ValueRAM (KVR),DDR4,4GB,1x4GB,2666,19,$250,Mercado Libre,"Mínimo Absoluto. Sigue vendiéndose para reparar equipos viejos o presupuestos de pobreza extrema (<$4,000 MXN total).",
+42,101010,Bajo (Nicho),ADATA,Premier (Verde),DDR4,4GB,1x4GB,2666,19,$240,Cyberpuerta,Competidor 4GB. Alternativa directa a Kingston ValueRAM cuando hay escasez de stock.,

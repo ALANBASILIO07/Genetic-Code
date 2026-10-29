@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados del Algoritmo Genético - Pruebas de Escritorio</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #475569;
+            --accent: #10b981;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: #1e293b;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+
+        header {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 { margin: 0; font-size: 1.5rem; color: var(--primary); }
+        h2 { margin: 0 0 15px 0; font-size: 1.1rem; color: var(--secondary); border-bottom: 2px solid var(--border); padding-bottom: 10px; }
+
+        /* Tabs Navigation */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            background: var(--card-bg);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--secondary);
+            transition: all 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3);
+        }
+
+        /* Main Grid Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 0.6fr; /* Más espacio para la tabla ahora que tiene más columnas */
+            gap: 20px;
+            flex: 1;
+            overflow: hidden; 
+        }
+
+        .panel {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Tables Panel */
+        .tables-container {
+            overflow-y: auto;
+            flex: 1;
+            padding-right: 5px;
+        }
+
+        .gen-section {
+            margin-bottom: 30px;
+        }
+
+        .gen-header {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #eff6ff;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.75rem; /* Letra un poco más pequeña para que quepa todo */
+        }
+
+        th, td {
+            padding: 6px 8px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--secondary);
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            white-space: nowrap;
+        }
+        
+        .col-chromosome { font-family: monospace; color: #64748b; font-size: 0.7rem; }
+        .col-metric { text-align: center; font-weight: 500; }
+
+        .status-ok { color: var(--accent); font-weight: 600; }
+        .status-bad { color: var(--danger); font-weight: 600; }
+        .row-best { background-color: #ecfdf5; }
+        .row-worst { background-color: #fef2f2; }
+
+        /* Chart Panel */
+        .chart-container {
+            flex: 1;
+            position: relative;
+            min-height: 300px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 columnas en lugar de 3 para ahorrar espacio vertical si es necesario */
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        /* Ajuste para que la tercera tarjeta ocupe todo el ancho si hay 3 elementos y 2 columnas */
+        .metric-card:last-child:nth-child(odd) {
+             grid-column: span 2;
+        }
+
+
+        .metric-card {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .metric-value { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+        .metric-label { font-size: 0.8rem; color: var(--secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        @media (max-width: 1024px) {
+            .dashboard-grid { grid-template-columns: 1fr; overflow-y: auto; }
+            body { height: auto; }
+            table { font-size: 0.7rem; } 
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1>🧬 Pruebas de Escritorio - Algoritmo Genético</h1>
+            <span style="font-size: 0.9rem; color: var(--secondary);">Proyecto de Optimización de Hardware | Alan Osvaldo Basilio Delgado</span>
+        </div>
+    </header>
+
+    <!-- Navegación de Perfiles -->
+    <div class="tabs">
+        <button class="tab-btn" data-key="admin" onclick="loadProfile('admin')">🏢 Administrativo</button>
+        <button class="tab-btn" data-key="student" onclick="loadProfile('student')">🎓 Estudiante</button>
+        <button class="tab-btn" data-key="dev" onclick="loadProfile('dev')">💻 Desarrollador</button>
+        <button class="tab-btn" data-key="isp" onclick="loadProfile('isp')">📡 ISP (Empresa)</button>
+    </div>
+
+    <div class="dashboard-grid">
+        
+        <!-- PANEL IZQUIERDO: TABLAS -->
+        <div class="panel">
+            <h2>📊 Tablas de Evolución (3 Generaciones)</h2>
+            <div class="tables-container" id="tablesContent">
+                <!-- Se llena con JS -->
+            </div>
+        </div>
+
+        <!-- PANEL DERECHO: GRÁFICAS -->
+        <div class="panel">
+            <h2>📈 Gráfica de Convergencia del Fitness</h2>
+            <div class="chart-container">
+                <canvas id="fitnessChart"></canvas>
+            </div>
+            
+            <div class="metrics-grid" id="metricsContent">
+                <!-- Métricas finales -->
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- DATOS SIMULADOS (Enriquecidos con Cromosoma, N_Ahorro, N_Rend) ---
+        // Estos datos ahora muestran la "justificación matemática" completa.
+        
+        const data = {
+            admin: {
+                name: "Trabajador Administrativo ($8k)",
+                weights: "α(Rend)=0.2, β(Ahorro)=0.8",
+                gens: [
+                    { 
+                        id: 0, 
+                        best: { id: "I-06", fit: 0.65, cost: 6000, chrom: "[18,28,0,36,9,0,0,0,1]", n_sav: 0.25, n_perf: 0.40, desc: "Ryzen 4600G, 8GB" },
+                        worst: { id: "I-02", fit: 0.01, cost: 36500, chrom: "[29,23,15,21,45,21,32,26,25]", n_sav: -3.5, n_perf: 0.95, desc: "Excede Presupuesto" },
+                        avg: 0.42,
+                        samples: [
+                            {id: "I-01", fit: 0.65, cost: 6000, chrom: "[18,28,0,36,9,0,0,0,1]", n_sav: 0.25, n_perf: 0.40, note: "Válido"},
+                            {id: "I-02", fit: 0.01, cost: 36500, chrom: "[29,23,15,21,45,21,32,26,25]", n_sav: -3.56, n_perf: 0.95, note: "Inválido ($$$)"},
+                            {id: "I-03", fit: 0.55, cost: 7500, chrom: "[3,33,0,1,28,1,5,4,9]", n_sav: 0.06, n_perf: 0.45, note: "Válido"},
+                            {id: "I-04", fit: 0.01, cost: 9200, chrom: "[15,4,12,0,28,1,5,4,9]", n_sav: -0.15, n_perf: 0.60, note: "Inválido ($$$)"},
+                            {id: "I-05", fit: 0.62, cost: 6800, chrom: "[18,28,0,36,28,0,0,0,1]", n_sav: 0.15, n_perf: 0.42, note: "Válido"}
+                        ]
+                    },
+                    { 
+                        id: 1, 
+                        best: { id: "I-12", fit: 0.78, cost: 5800, chrom: "[18,28,0,36,9,0,0,0,1]", n_sav: 0.28, n_perf: 0.40, desc: "Optimización Costo" },
+                        worst: { id: "I-34", fit: 0.45, cost: 7900, chrom: "[3,33,0,1,28,1,5,4,9]", n_sav: 0.01, n_perf: 0.45, desc: "Caro sin rendimiento" },
+                        avg: 0.68,
+                        samples: [
+                            {id: "I-12", fit: 0.78, cost: 5800, chrom: "[18,28,0,36,9,0,0,0,1]", n_sav: 0.28, n_perf: 0.40, note: "Mejora (Hijo I-01 x I-05)"},
+                            {id: "I-15", fit: 0.72, cost: 6200, chrom: "[18,28,0,36,28,0,0,0,1]", n_sav: 0.22, n_perf: 0.42, note: "Estable"},
+                            {id: "I-22", fit: 0.65, cost: 6000, chrom: "[18,28,0,36,9,0,0,0,1]", n_sav: 0.25, n_perf: 0.40, note: "Clon I-01"},
+                            {id: "I-45", fit: 0.70, cost: 6100, chrom: "[18,28,0,36,9,0,0,0,1]", n_sav: 0.24, n_perf: 0.41, note: "Válido"}
+                        ]
+                    },
+                    { 
+                        id: 2, 
+                        best: { id: "I-23", fit: 0.85, cost: 5500, chrom: "[18,28,0,36,9,0,0,0,1]", n_sav: 0.31, n_perf: 0.40, desc: "SSD más barato (Mutación)" },
+                        worst: { id: "I-18", fit: 0.60, cost: 7000, chrom: "[3,33,0,1,28,1,5,4,9]", n_sav: 0.12, n_perf: 0.45, desc: "Sub-óptimo" },
+                        avg: 0.79,
+                        samples: [
+                            {id: "I-23", fit: 0.85, cost: 5500, chrom: "[18,28,0,36,9,0,0,0,1]", n_sav: 0.31, n_perf: 0.40, note: "Mutación Exitosa (SSD)"},
+                            {id: "I-12", fit: 0.78, cost: 5800, chrom: "[18,28,0,36,9,0,0,0,1]", n_sav: 0.28, n_perf: 0.40, note: "Elitismo"},
+                            {id: "I-44", fit: 0.82, cost: 5600, chrom: "[18,28,0,36,9,0,0,0,1]", n_sav: 0.30, n_perf: 0.40, note: "Casi óptimo"}
+                        ]
+                    }
+                ]
+            },
+            student: {
+                name: "Estudiante Universitario ($15k)",
+                weights: "α(Rend)=0.5, β(Ahorro)=0.5",
+                gens: [
+                    { 
+                        id: 0, 
+                        best: { id: "I-06", fit: 0.89, cost: 13500, chrom: "[15,4,12,0,28,1,5,4,9]", n_sav: 0.10, n_perf: 0.79, desc: "Sweet Spot" },
+                        worst: { id: "I-09", fit: 0.01, cost: 15800, chrom: "[29,4,12,0,28,1,5,4,9]", n_sav: -0.05, n_perf: 0.80, desc: "Excede Presupuesto" },
+                        avg: 0.52,
+                        samples: [
+                            {id: "I-01", fit: 0.65, cost: 6000, chrom: "[18,28,0,36,9,0,0,0,1]", n_sav: 0.60, n_perf: 0.40, note: "Muy básico"},
+                            {id: "I-06", fit: 0.89, cost: 13500, chrom: "[15,4,12,0,28,1,5,4,9]", n_sav: 0.10, n_perf: 0.79, note: "Excelente"},
+                            {id: "I-09", fit: 0.01, cost: 15800, chrom: "[29,4,12,0,28,1,5,4,9]", n_sav: -0.05, n_perf: 0.80, note: "Inválido"},
+                            {id: "I-10", fit: 0.81, cost: 10200, chrom: "[15,2,7,0,16,1,5,4,9]", n_sav: 0.32, n_perf: 0.65, note: "Buen balance"}
+                        ]
+                    },
+                    { 
+                        id: 1, 
+                        best: { id: "I-01", fit: 0.90, cost: 13400, chrom: "[15,4,12,0,16,1,5,4,9]", n_sav: 0.11, n_perf: 0.79, desc: "SSD Optimizado" },
+                        worst: { id: "I-40", fit: 0.60, cost: 14000, chrom: "[3,5,7,1,28,1,5,4,9]", n_sav: 0.07, n_perf: 0.55, desc: "Sin GPU dedicada" },
+                        avg: 0.78,
+                        samples: [
+                            {id: "I-01", fit: 0.90, cost: 13400, chrom: "[15,4,12,0,16,1,5,4,9]", n_sav: 0.11, n_perf: 0.79, note: "Mejora (Hijo I-06 x I-10)"},
+                            {id: "I-02", fit: 0.82, cost: 10300, chrom: "[15,2,7,0,28,1,5,4,9]", n_sav: 0.31, n_perf: 0.65, note: "Variante económica"},
+                            {id: "I-03", fit: 0.89, cost: 13500, chrom: "[15,4,12,0,28,1,5,4,9]", n_sav: 0.10, n_perf: 0.79, note: "Clon I-06"}
+                        ]
+                    },
+                    { 
+                        id: 2, 
+                        best: { id: "I-05", fit: 0.92, cost: 12549, chrom: "[15,4,12,0,28,1,5,4,9]", n_sav: 0.16, n_perf: 0.80, desc: "RAM 16GB (Mutación)" },
+                        worst: { id: "I-11", fit: 0.72, cost: 11000, chrom: "[15,2,7,0,28,1,5,4,9]", n_sav: 0.27, n_perf: 0.60, desc: "Regular" },
+                        avg: 0.85,
+                        samples: [
+                            {id: "I-05", fit: 0.92, cost: 12549, chrom: "[15,4,12,0,28,1,5,4,9]", n_sav: 0.16, n_perf: 0.80, note: "Mutación RAM (8->16GB)"},
+                            {id: "I-01", fit: 0.90, cost: 13400, chrom: "[15,4,12,0,16,1,5,4,9]", n_sav: 0.11, n_perf: 0.79, note: "Elitismo"},
+                            {id: "I-33", fit: 0.88, cost: 13000, chrom: "[15,4,12,0,28,1,5,4,9]", n_sav: 0.13, n_perf: 0.78, note: "Muy bueno"}
+                        ]
+                    }
+                ]
+            },
+            dev: {
+                name: "Desarrollador ($25k)",
+                weights: "α(Rend)=0.7, β(Ahorro)=0.3",
+                gens: [
+                    { 
+                        id: 0, 
+                        best: { id: "I-45", fit: 0.75, cost: 22000, chrom: "[10,8,15,20,39,6,10,12,10]", n_sav: 0.12, n_perf: 0.85, desc: "i5 + 32GB" },
+                        worst: { id: "I-12", fit: 0.01, cost: 28000, chrom: "[13,17,35,31,45,21,32,26,25]", n_sav: -0.12, n_perf: 0.90, desc: "Excede Presupuesto" },
+                        avg: 0.35,
+                        samples: [
+                            {id: "I-01", fit: 0.40, cost: 15000, chrom: "[15,4,12,0,28,1,5,4,9]", n_sav: 0.40, n_perf: 0.50, note: "RAM insuficiente (16GB)"},
+                            {id: "I-45", fit: 0.75, cost: 22000, chrom: "[10,8,15,20,39,6,10,12,10]", n_sav: 0.12, n_perf: 0.85, note: "Cumple mínimio"},
+                            {id: "I-12", fit: 0.01, cost: 28000, chrom: "[13,17,35,31,45,21,32,26,25]", n_sav: -0.12, n_perf: 0.90, note: "Inválido"}
+                        ]
+                    },
+                    { 
+                        id: 1, 
+                        best: { id: "I-10", fit: 0.88, cost: 24500, chrom: "[10,17,33,20,45,6,10,12,10]", n_sav: 0.02, n_perf: 0.92, desc: "NVMe Gen4 + i7" },
+                        worst: { id: "I-02", fit: 0.50, cost: 18000, chrom: "[10,8,15,20,9,6,10,12,10]", n_sav: 0.28, n_perf: 0.65, desc: "SSD Lento" },
+                        avg: 0.65,
+                        samples: [
+                            {id: "I-10", fit: 0.88, cost: 24500, chrom: "[10,17,33,20,45,6,10,12,10]", n_sav: 0.02, n_perf: 0.92, note: "Gran mejora Rendimiento"},
+                            {id: "I-22", fit: 0.82, cost: 23000, chrom: "[10,8,15,20,39,6,10,12,10]", n_sav: 0.08, n_perf: 0.88, note: "Opción sólida"},
+                            {id: "I-45", fit: 0.75, cost: 22000, chrom: "[10,8,15,20,39,6,10,12,10]", n_sav: 0.12, n_perf: 0.85, note: "Elitismo"}
+                        ]
+                    },
+                    { 
+                        id: 2, 
+                        best: { id: "I-10", fit: 0.91, cost: 24200, chrom: "[10,17,33,20,45,6,10,12,10]", n_sav: 0.03, n_perf: 0.92, desc: "Fuente optimizada" },
+                        worst: { id: "I-30", fit: 0.60, cost: 19000, chrom: "[10,4,15,20,39,6,10,12,10]", n_sav: 0.24, n_perf: 0.70, desc: "CPU débil" },
+                        avg: 0.78,
+                        samples: [
+                            {id: "I-10", fit: 0.91, cost: 24200, chrom: "[10,17,33,20,45,6,10,12,10]", n_sav: 0.03, n_perf: 0.92, note: "Ajuste fino costo"},
+                            {id: "I-15", fit: 0.89, cost: 24800, chrom: "[10,17,33,20,45,6,10,12,10]", n_sav: 0.01, n_perf: 0.93, note: "Potente pero caro"}
+                        ]
+                    }
+                ]
+            },
+            isp: {
+                name: "ISP / Micro-empresa ($30k)",
+                weights: "α(Rend)=0.9, β(Ahorro)=0.1",
+                gens: [
+                    { 
+                        id: 0, 
+                        best: { id: "I-88", fit: 0.60, cost: 28000, chrom: "[29,22,0,21,45,21,32,26,25]", n_sav: 0.07, n_perf: 0.85, desc: "Ryzen 9 + UPS" },
+                        worst: { id: "I-01", fit: 0.01, cost: 35000, chrom: "[36,23,0,21,45,21,32,43,25]", n_sav: -0.17, n_perf: 0.95, desc: "Excede" },
+                        avg: 0.30,
+                        samples: [
+                            {id: "I-88", fit: 0.60, cost: 28000, chrom: "[29,22,0,21,45,21,32,26,25]", n_sav: 0.07, n_perf: 0.85, note: "Válido"},
+                            {id: "I-05", fit: 0.20, cost: 25000, chrom: "[29,22,0,21,45,21,32,26,10]", n_sav: 0.17, n_perf: 0.80, note: "Sin UPS Online (Penalizado)"},
+                            {id: "I-01", fit: 0.01, cost: 35000, chrom: "[36,23,0,21,45,21,32,43,25]", n_sav: -0.17, n_perf: 0.95, note: "Inválido"}
+                        ]
+                    },
+                    { 
+                        id: 1, 
+                        best: { id: "I-12", fit: 0.80, cost: 29500, chrom: "[29,22,0,21,45,21,32,26,25]", n_sav: 0.02, n_perf: 0.88, desc: "Ryzen 9 + UPS Online" },
+                        worst: { id: "I-44", fit: 0.40, cost: 26000, chrom: "[29,22,0,21,45,21,32,26,9]", n_sav: 0.13, n_perf: 0.82, desc: "Sin UPS" },
+                        avg: 0.55,
+                        samples: [
+                            {id: "I-12", fit: 0.80, cost: 29500, chrom: "[29,22,0,21,45,21,32,26,25]", n_sav: 0.02, n_perf: 0.88, note: "Cumple Requisitos"},
+                            {id: "I-88", fit: 0.60, cost: 28000, chrom: "[29,22,0,21,45,21,32,26,25]", n_sav: 0.07, n_perf: 0.85, note: "Elitismo"}
+                        ]
+                    },
+                    { 
+                        id: 2, 
+                        best: { id: "I-12", fit: 0.85, cost: 29000, chrom: "[29,22,0,21,45,21,32,26,25]", n_sav: 0.03, n_perf: 0.89, desc: "Gabinete más barato" },
+                        worst: { id: "I-20", fit: 0.50, cost: 27000, chrom: "[29,22,0,21,45,1,32,26,25]", n_sav: 0.10, n_perf: 0.83, desc: "Refrigeración débil" },
+                        avg: 0.70,
+                        samples: [
+                            {id: "I-12", fit: 0.85, cost: 29000, chrom: "[29,22,0,21,45,21,32,26,25]", n_sav: 0.03, n_perf: 0.89, note: "Optimización"},
+                            {id: "I-15", fit: 0.82, cost: 29800, chrom: "[29,22,0,21,45,21,32,26,25]", n_sav: 0.01, n_perf: 0.89, note: "Casi límite"}
+                        ]
+                    }
+                ]
+            }
+        };
+
+        // --- LÓGICA DE VISUALIZACIÓN ---
+        let myChart = null;
+
+        function loadProfile(profileKey) {
+            // 1. Activar botón usando atributo data-key para evitar error de event.target
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-key') === profileKey) {
+                    btn.classList.add('active');
+                }
+            });
+
+            const pData = data[profileKey];
+
+            // 2. Renderizar Tablas
+            const tablesContainer = document.getElementById('tablesContent');
+            tablesContainer.innerHTML = '';
+
+            pData.gens.forEach(gen => {
+                const section = document.createElement('div');
+                section.className = 'gen-section';
+                
+                let rowsHTML = '';
+                gen.samples.forEach(row => {
+                    const statusClass = row.note.includes("Inválido") ? "status-bad" : "status-ok";
+                    const rowClass = row.fit === gen.best.fit ? "row-best" : (row.fit === gen.worst.fit ? "row-worst" : "");
+                    
+                    rowsHTML += `
+                        <tr class="${rowClass}">
+                            <td>${row.id}</td>
+                            <td class="col-chromosome">${row.chrom}</td>
+                            <td>$${row.cost.toLocaleString()}</td>
+                            <td class="col-metric">${row.n_sav.toFixed(2)}</td>
+                            <td class="col-metric">${row.n_perf.toFixed(2)}</td>
+                            <td><strong>${row.fit.toFixed(2)}</strong></td>
+                            <td class="${statusClass}">${row.note}</td>
+                        </tr>
+                    `;
+                });
+
+                section.innerHTML = `
+                    <div class="gen-header">
+                        <span>Generación ${gen.id}</span>
+                        <span style="font-size:0.8rem; font-weight:normal; color:#64748b;">
+                            Avg Fit: <strong>${gen.avg.toFixed(2)}</strong>
+                        </span>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cromosoma [M,P,G,R,A,C,F,B,S]</th>
+                                <th>Costo</th>
+                                <th class="col-metric">N_Ahorro</th>
+                                <th class="col-metric">N_Rend</th>
+                                <th>Fit</th>
+                                <th>Estado/Notas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rowsHTML}
+                            <tr style="background:#f0f9ff; font-weight:bold; border-top:2px solid #cbd5e1;">
+                                <td>MEJOR</td>
+                                <td class="col-chromosome">${gen.best.chrom}</td>
+                                <td>$${gen.best.cost.toLocaleString()}</td>
+                                <td class="col-metric">${gen.best.n_sav.toFixed(2)}</td>
+                                <td class="col-metric">${gen.best.n_perf.toFixed(2)}</td>
+                                <td>${gen.best.fit.toFixed(2)}</td>
+                                <td>${gen.best.desc}</td>
+                            </tr>
+                            <tr style="background:#fef2f2; font-size:0.8rem; color:#ef4444;">
+                                <td>PEOR</td>
+                                <td class="col-chromosome">${gen.worst.chrom}</td>
+                                <td>$${gen.worst.cost.toLocaleString()}</td>
+                                <td class="col-metric">${gen.worst.n_sav.toFixed(2)}</td>
+                                <td class="col-metric">${gen.worst.n_perf.toFixed(2)}</td>
+                                <td>${gen.worst.fit.toFixed(2)}</td>
+                                <td>${gen.worst.desc}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `;
+                tablesContainer.appendChild(section);
+            });
+
+            // 3. Renderizar Gráfica
+            updateChart(pData);
+
+            // 4. Actualizar Métricas Finales
+            const lastGen = pData.gens[pData.gens.length - 1];
+            document.getElementById('metricsContent').innerHTML = `
+                <div class="metric-card">
+                    <div class="metric-value">${lastGen.best.fit.toFixed(2)}</div>
+                    <div class="metric-label">Mejor Fitness Final</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">$${lastGen.best.cost.toLocaleString()}</div>
+                    <div class="metric-label">Costo Óptimo</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" style="color:${lastGen.avg > 0.7 ? '#10b981' : '#f59e0b'}">
+                        ${lastGen.avg.toFixed(2)}
+                    </div>
+                    <div class="metric-label">Fitness Promedio</div>
+                </div>
+            `;
+        }
+
+        function updateChart(pData) {
+            const ctx = document.getElementById('fitnessChart').getContext('2d');
+            
+            if (myChart) myChart.destroy();
+
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: pData.gens.map(g => `Gen ${g.id}`),
+                    datasets: [
+                        {
+                            label: 'Mejor Fitness',
+                            data: pData.gens.map(g => g.best.fit),
+                            borderColor: '#10b981', // Verde
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: true
+                        },
+                        {
+                            label: 'Promedio',
+                            data: pData.gens.map(g => g.avg),
+                            borderColor: '#2563eb', // Azul
+                            backgroundColor: 'rgba(37, 99, 235, 0.05)',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            tension: 0.3
+                        },
+                        {
+                            label: 'Peor Fitness',
+                            data: pData.gens.map(g => g.worst.fit),
+                            borderColor: '#ef4444', // Rojo
+                            borderWidth: 1,
+                            tension: 0.3,
+                            pointRadius: 2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 1.0,
+                            title: { display: true, text: 'Aptitud (0-1)' }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'top' },
+                        tooltip: { mode: 'index', intersect: false },
+                        title: { display: true, text: `Pesos: ${pData.weights}` }
+                    }
+                }
+            });
+        }
+
+        // Cargar default
+        window.onload = () => loadProfile('student'); // Carga perfil estudiante por defecto (el más ilustrativo)
+    </script>
+</body>
+</html>

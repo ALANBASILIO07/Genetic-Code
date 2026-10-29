@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Genético - Vista Completa</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root { --primary: #2563eb; --bg: #f1f5f9; --white: #ffffff; }
+        body { font-family: sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #334155; }
+        
+        /* Layout */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .container { display: grid; grid-template-columns: 250px 1fr; gap: 20px; height: calc(100vh - 100px); }
+        
+        /* Sidebar Controls */
+        .sidebar { background: var(--white); padding: 20px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .control-group { margin-bottom: 20px; }
+        label { display: block; font-weight: bold; margin-bottom: 8px; font-size: 0.9rem; }
+        select, button { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 5px; cursor: pointer; }
+        button.active { background: var(--primary); color: white; border-color: var(--primary); }
+        
+        /* Main Content */
+        .main-panel { display: flex; flex-direction: column; gap: 20px; overflow: hidden; }
+        
+        /* Stats Cards */
+        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+        .card { background: var(--white); padding: 15px; border-radius: 10px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .card h3 { margin: 0; font-size: 2rem; color: var(--primary); }
+        .card p { margin: 5px 0 0; font-size: 0.8rem; color: #64748b; text-transform: uppercase; }
+
+        /* Table */
+        .table-container { background: var(--white); border-radius: 12px; flex: 1; overflow: auto; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        th { background: #f8fafc; padding: 12px; text-align: left; position: sticky; top: 0; border-bottom: 2px solid #e2e8f0; }
+        td { padding: 10px 12px; border-bottom: 1px solid #f1f5f9; }
+        tr:hover { background: #f8fafc; }
+        
+        .status-ok { color: #10b981; font-weight: bold; }
+        .status-bad { color: #ef4444; font-weight: bold; }
+        .row-best { background: #ecfdf5 !important; border-left: 4px solid #10b981; }
+
+        /* Loading */
+        #loader { position: fixed; inset: 0; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; z-index: 99; font-size: 1.5rem; }
+    </style>
+</head>
+<body>
+
+    <div id="loader">Cargando datos...</div>
+
+    <div class="header">
+        <div>
+            <h1 style="margin:0; color:var(--primary)">🧬 Visor de Población Completa</h1>
+            <small>Observando 50 Individuos por Generación</small>
+        </div>
+        <div>
+            <span id="fileStatus" style="background:#dbeafe; color:#1e40af; padding: 5px 10px; border-radius: 20px; font-size: 0.8rem;">Leído desde JSON</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <div class="control-group">
+                <label>1. Perfil</label>
+                <div id="profileButtons">
+                    </div>
+            </div>
+            
+            <div class="control-group">
+                <label>2. Generación</label>
+                <select id="genSelect" onchange="renderView()">
+                    </select>
+            </div>
+
+            <div class="control-group">
+                <label>Filtros Visuales</label>
+                <button onclick="toggleBestOnly()">Mostrar solo el Mejor</button>
+                <button onclick="renderView()">Ver Todos (50)</button>
+            </div>
+        </div>
+
+        <div class="main-panel">
+            <div class="stats-row">
+                <div class="card">
+                    <h3 id="statFit">-</h3>
+                    <p>Mejor Fitness</p>
+                </div>
+                <div class="card">
+                    <h3 id="statCost">-</h3>
+                    <p>Costo Óptimo</p>
+                </div>
+                <div class="card">
+                    <h3 id="statAvg">-</h3>
+                    <p>Promedio Gen</p>
+                </div>
+                <div class="card">
+                    <h3 id="statInds">50</h3>
+                    <p>Individuos</p>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cromosoma (IDs de CSV)</th>
+                            <th>Costo ($)</th>
+                            <th>Ahorro (N)</th>
+                            <th>Rend (N)</th>
+                            <th>Fitness</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let globalData = {};
+        let currentProfile = 'student';
+        let currentGenIndex = 0;
+
+        // Cargar JSON
+        window.onload = async () => {
+            try {
+                const res = await fetch('datos_ag1.json');
+                if(!res.ok) throw new Error("Ejecuta el script de Python primero.");
+                globalData = await res.json();
+                
+                initControls();
+                document.getElementById('loader').style.display = 'none';
+            } catch (e) {
+                document.getElementById('loader').innerHTML = `<span style="color:red">Error: ${e.message}</span>`;
+            }
+        };
+
+        function initControls() {
+            // 1. Crear botones de perfil
+            const container = document.getElementById('profileButtons');
+            container.innerHTML = '';
+            Object.keys(globalData).forEach(key => {
+                const btn = document.createElement('button');
+                btn.innerText = globalData[key].name;
+                btn.onclick = () => {
+                    currentProfile = key;
+                    updateGenSelect(); // Resetear selector de generación
+                    highlightProfileBtn(btn);
+                };
+                if(key === currentProfile) highlightProfileBtn(btn);
+                container.appendChild(btn);
+            });
+            updateGenSelect();
+        }
+
+        function highlightProfileBtn(activeBtn) {
+            document.querySelectorAll('#profileButtons button').forEach(b => b.classList.remove('active'));
+            activeBtn.classList.add('active');
+        }
+
+        function updateGenSelect() {
+            const select = document.getElementById('genSelect');
+            select.innerHTML = '';
+            const gens = globalData[currentProfile].gens;
+            
+            gens.forEach((g, index) => {
+                const opt = document.createElement('option');
+                opt.value = index;
+                opt.innerText = `Generación ${g.id} (Avg: ${g.avg.toFixed(3)})`;
+                select.appendChild(opt);
+            });
+            
+            // Seleccionar la última generación por defecto
+            select.value = gens.length - 1; 
+            renderView();
+        }
+
+        function renderView() {
+            currentGenIndex = document.getElementById('genSelect').value;
+            const genData = globalData[currentProfile].gens[currentGenIndex];
+            
+            // 1. Actualizar Tarjetas
+            document.getElementById('statFit').innerText = genData.best.fit.toFixed(4);
+            document.getElementById('statCost').innerText = "$" + genData.best.cost.toLocaleString();
+            document.getElementById('statAvg').innerText = genData.avg.toFixed(4);
+            
+            // 2. Renderizar Tabla (Los 50 individuos)
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            
+            // Ordenar: Poner al mejor arriba
+            const population = [...genData.population].sort((a,b) => b.fit - a.fit);
+
+            population.forEach(ind => {
+                const tr = document.createElement('tr');
+                
+                // Resaltar al mejor absoluto
+                if(ind.fit === genData.best.fit) tr.className = 'row-best';
+                
+                const isBad = ind.note.includes("Excede") || ind.note.includes("Incompatible") || ind.fit < 0.1;
+                const statusClass = isBad ? 'status-bad' : 'status-ok';
+
+                tr.innerHTML = `
+                    <td><strong>${ind.id}</strong></td>
+                    <td style="font-family:monospace; color:#64748b; font-size:0.75rem">${ind.chrom}</td>
+                    <td>$${ind.cost.toLocaleString()}</td>
+                    <td>${ind.n_sav.toFixed(2)}</td>
+                    <td>${ind.n_perf.toFixed(2)}</td>
+                    <td style="font-size:1rem; font-weight:bold">${ind.fit.toFixed(4)}</td>
+                    <td class="${statusClass}">${ind.note}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function toggleBestOnly() {
+            const tbody = document.getElementById('tableBody');
+            const rows = Array.from(tbody.getElementsByTagName('tr'));
+            rows.forEach(row => {
+                if(!row.classList.contains('row-best')) {
+                    row.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

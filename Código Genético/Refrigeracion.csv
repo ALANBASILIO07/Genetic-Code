@@ -1,0 +1,26 @@
+﻿ID,ID Binario,Nivel de Ventas,Marca,Modelo / Serie,Tipo,Compatibilidad Socket,TDP Máx. (Aprox W),Tamaño Fan(s) (mm) / Rad (mm),RGB,Tienda (Mejor Precio),Mejor Precio (MXN),Justificación Específica (Fuente/Ranking/Perfil),
+0,000000,Muy Alto,N/A (CPU),Cooler de Stock,Aire Stock,AM4/AM5/LGA1700,~65-105W,92mm,No,N/A,$0,Opción Base. Si el CPU lo incluye. Costo $0. (Admin/Estudiante).,Cooler del CPU
+1,000001,Muy Alto,Deepcool,AG400 / Gammaxx 400,Aire Torre,AM4/AM5/LGA1700,~150W,1x 120mm,Opcional,Amazon,$400,#1 Cooler económico Más Vendido Amazon/ML. Mejora básica sobre stock. (Estudiante).,Aire - Torre Económica
+2,000010,Alto,ID-Cooling,SE-214-XT,Aire Torre,AM4/AM5/LGA1700,~180W,1x 120mm,ARGB,Mercado Libre,$450,Muy popular en ML por precio/rendimiento/ARGB. Fuerte competidor del AG400. (Estudiante).,
+3,000011,Medio,Cooler Master,Hyper H410R / H411R,Aire Torre,AM4/AM5/LGA1700,~100W,1x 92mm,Opcional,Mercado Libre,$350,"Opción muy barata de marca reconocida. Para CPUs bajo consumo ""F"". (Admin).",
+4,000100,Muy Alto,Thermalright,Peerless Assassin 120 SE,Aire Torre (Doble),AM4/AM5/LGA1700,~265W,2x 120mm,ARGB Opc.,Amazon,$800,Rey rendimiento/precio gama media. #1 popularidad entusiasta (Cyberpuerta/DDTech). (Desarrollador).,Aire - Torre Gama Media
+5,000101,Alto,Deepcool,AK400,Aire Torre,AM4/AM5/LGA1700,~220W,1x 120mm,Opcional,Amazon,$650,Muy popular por estética y rendimiento sólido. Alt. si PA120SE no cabe. (Estudiante/Desarrollador).,
+6,000110,Alto,Deepcool,AK620,Aire Torre (Doble),AM4/AM5/LGA1700,~260W,2x 120mm,No (Zero Dark sí),Amazon,"$1,100",Muy popular por alto rendimiento y estética limpia. Competidor PA120SE. (Desarrollador).,
+7,000111,Medio,Cooler Master,Hyper 212 (Black/ARGB),Aire Torre,AM4/AM5/LGA1700,~180W,1x 120mm,Opcional,Amazon,$700,"Clásico. Superado en rendimiento/precio, pero popular por marca. (Estudiante).",
+8,001000,Medio,Thermalright,Phantom Spirit 120 SE,Aire Torre (Doble),AM4/AM5/LGA1700,~270W,2x 120mm,ARGB Opc.,Amazon,$900,Versión mejorada PA120SE. Popular entusiastas max rendimiento/precio. (Desarrollador).,
+9,001001,Medio,Noctua,NH-D15 / NH-D15S,Aire Torre (Doble),AM4/AM5/LGA1700,~280W+,2x 140mm,No,Amazon,"$2,200",Rey enfriamiento por aire (rendimiento/silencio). Nicho entusiasta. (Desarrollador Pro/Micro-empresa).,Aire - Torre Gama Alta
+10,001010,Medio,Deepcool,Assassin IV,Aire Torre (Doble),AM4/AM5/LGA1700,~280W,120+140mm,No,Amazon,"$1,800","Competidor NH-D15, popular por estética moderna. (Desarrollador Pro/Micro-empresa).",
+11,001011,Bajo,Be Quiet!,Dark Rock Pro 4 / 5,Aire Torre (Doble),AM4/AM5/LGA1700,~250W+,120+135mm,No,Amazon,"$2,000","Alternativa popular NH-D15, enfocada en silencio. (Desarrollador Pro).",
+12,001100,Bajo (Nicho),Noctua,NH-L9a (AMD) / L9i (Intel),Aire Bajo Perfil,AM4/AM5 o LGA1700,~95W,1x 92mm,No,Amazon,"$1,000",Opción #1 para gabinetes SFF (Mini-ITX) muy delgados.,Aire - Bajo Perfil
+13,001101,Bajo (Nicho),Thermalright,AXP90-X47 / X53,Aire Bajo Perfil,AM4/AM5/LGA1700,~125W,1x 92mm,No,Amazon,$600,Alternativa económica al Noctua L9 para SFF.,
+14,001110,Medio,Cooler Master,MasterLiquid Lite 120 / ML120L,AIO 120mm,AM4/AM5/LGA1700,~150W,1x 120mm / Rad 120,RGB/ARGB,Mercado Libre,"$1,000",AIO 120mm más vendido. Opción líquida entrada/estética. (Estudiante).,Líquida - AIO 120mm
+15,001111,Bajo,Deepcool,LE300 / Gammaxx L120,AIO 120mm,AM4/AM5/LGA1700,~150W,1x 120mm / Rad 120,RGB/ARGB,Mercado Libre,$900,Principal competidor CM ML120L. Popular en ML.,
+16,010000,Muy Alto,Cooler Master,MasterLiquid ML240L (V2) RGB/ARGB,AIO 240mm,AM4/AM5/LGA1700,~200W+,2x 120mm / Rad 240,ARGB,Amazon,"$1,400",AIO 240mm más vendido México. Excelente balance rend./precio/estética. (Estudiante/Desarrollador).,Líquida - AIO 240mm
+17,010001,Alto,Deepcool,LS520 SE / LE520,AIO 240mm,AM4/AM5/LGA1700,~220W+,2x 120mm / Rad 240,ARGB,Amazon,"$1,700",Muy popular por rendimiento y estética limpia. Fuerte competidor ML240L. (Desarrollador).,
+18,010010,Medio,ID-Cooling,Frostflow X 240 / Zoomflow 240,AIO 240mm,AM4/AM5/LGA1700,~200W,2x 120mm / Rad 240,ARGB,Mercado Libre,"$1,200","Opción AIO 240mm valor extremo, muy popular ML.",
+19,010011,Medio,Corsair,H100i Elite Capellix XT / RGB,AIO 240mm,AM4/AM5/LGA1700,~250W,2x 120mm / Rad 240,ARGB,Amazon,"$2,800","Opción AIO 240mm ""premium"". Popular por marca Corsair/iCUE. (Desarrollador).",
+20,010100,Bajo,NZXT,Kraken 240 / Elite 240,AIO 240mm,AM4/AM5/LGA1700,~250W+,2x 120mm / Rad 240,ARGB (LCD opc.),Amazon,"$3,000+",Nicho entusiasta popular por pantalla LCD personalizable.,
+21,010101,Alto,Deepcool,LS720 SE / LT720,AIO 360mm,AM4/AM5/LGA1700,~280W+,3x 120mm / Rad 360,ARGB,Amazon,"$2,200",AIO 360mm más popular por excelente rendimiento/precio. (Desarrollador Pro/Micro-empresa).,Líquida - AIO 360mm
+22,010110,Medio,Cooler Master,MasterLiquid 360L Core ARGB,AIO 360mm,AM4/AM5/LGA1700,~250W+,3x 120mm / Rad 360,ARGB,Amazon,"$2,000","Opción AIO 360mm de ""valor"" de Cooler Master. Muy vendida.",
+23,010111,Medio,Corsair,H150i Elite Capellix XT / RGB,AIO 360mm,AM4/AM5/LGA1700,~300W+,3x 120mm / Rad 360,ARGB,Amazon,"$3,800","Opción AIO 360mm ""premium"" Corsair. Popular gama alta. (Desarrollador Pro/Micro-empresa).",
+24,011000,Bajo,Lian Li,Galahad II Trinity / Performance,AIO 360mm,AM4/AM5/LGA1700,~300W+,3x 120mm / Rad 360,ARGB,Amazon,"$3,500+",Popular nicho entusiasta por estética/rendimiento.,

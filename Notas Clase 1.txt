@@ -1,0 +1,18 @@
+COMPUTADORA:
+Es aquel sistema que es capaz de procesar información en operaciones que se llevan a cabo en miles o millones por segundo.
+
+TAREA:
+Función f(x) = (2x^2) + (11x/3)
+Hacer un programa que evalué el intervalo de [-10,10] con incrementos de precisión desde 1,0.1,0.01,0.001,0.0001, etc.
+
+Tomar los tiempos con milisegundos para cada ejecución
+Usar el tipo de dato de doble precisión
+
+Hacer una gráfica con las características acordes a un plano cartesiano
+
+
+AGENTE VIAJERO
+
+Problema:
+Problema del agente viajero.
+Se deben visitar n ciudades pasando por cada una de ellas sin repetir y en la menor distancia. Puede empezar y terminar en cualquier ciudad.
